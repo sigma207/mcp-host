@@ -1,9 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller, Get, 
+} from '@nestjs/common'
 
 @Controller()
-export class CompletionsController {
+export class CompletionsController  {
   @Get()
   getHello(): string {
-    return 'Hello completions!';
+    return 'Hello completions!'
   }
 }
