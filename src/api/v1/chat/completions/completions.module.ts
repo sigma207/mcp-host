@@ -1,15 +1,25 @@
 import {
-  Module, 
+  Module,
 } from '@nestjs/common'
 import {
-  CompletionsController, 
+  CompletionsController,
 } from './completions.controller'
 import {
-  OllamaService, 
+  OllamaService,
 } from '@/services/ollama.service'
+import {
+  SocketIoService,
+} from '@/services/socket-io.service'
+import {
+  EventsModule,
+} from '@/events/events.module'
 
 @Module({
-  providers: [OllamaService],
+  imports: [EventsModule],
+  providers: [
+    OllamaService,
+    SocketIoService,
+  ],
   controllers: [CompletionsController],
 })
 export class CompletionsModule {}

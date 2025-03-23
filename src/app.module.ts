@@ -1,29 +1,33 @@
 import {
-  Module, 
+  Module,
 } from '@nestjs/common'
 import {
-  RouterModule, 
+  RouterModule,
 } from '@nestjs/core'
 import {
-  AppController, 
+  AppController,
 } from './app.controller'
 import {
-  AppService, 
+  AppService,
 } from './app.service'
 import {
-  ApiModule, 
+  ApiModule,
 } from './api/api.module'
 import {
-  V1Module, 
+  EventsModule,
+} from './events/events.module'
+import {
+  V1Module,
 } from './api/v1/v1.module'
 import {
-  ChatModule, 
+  ChatModule,
 } from './api/v1/chat/chat.module'
 import {
-  CompletionsModule, 
+  CompletionsModule,
 } from './api/v1/chat/completions/completions.module'
 @Module({
   imports: [
+    EventsModule,
     ApiModule,
     RouterModule.register([{
       path: 'api',

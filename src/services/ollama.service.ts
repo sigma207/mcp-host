@@ -1,8 +1,7 @@
 import {
-  Injectable, 
+  Injectable,
 } from '@nestjs/common'
 import ollama from 'ollama'
-
 @Injectable()
 export class OllamaService {
   async chat(message: string) {
@@ -15,8 +14,7 @@ export class OllamaService {
       model: 'llama3.1:latest',
       stream: true,
     })
-    for await (const part of response) {
-      process.stdout.write(part.message.content)
-    }
+
+    return response
   }
 }
