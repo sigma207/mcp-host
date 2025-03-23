@@ -17,6 +17,9 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src/**/*", "eslint-config-myconfig.mjs", "eslint.config.mjs"],
   "ts-node": {
