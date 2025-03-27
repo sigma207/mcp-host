@@ -25,10 +25,21 @@ import {
 import {
   CompletionsModule,
 } from './api/v1/chat/completions/completions.module'
+import {
+  McpCollectorModule,
+} from './modules/mcp-collector/mcp-collector.module'
+import {
+  ChromaModule,
+} from './modules/chroma/chroma.module'
+import {
+  InitService,
+} from './init.service'
 @Module({
   imports: [
     EventsModule,
     ApiModule,
+    McpCollectorModule,
+    ChromaModule,
     RouterModule.register([{
       path: 'api',
       module: ApiModule,
@@ -47,6 +58,9 @@ import {
     }]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    InitService,
+  ],
 })
 export class AppModule {}

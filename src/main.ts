@@ -1,15 +1,23 @@
 import {
-  NestFactory, 
+  NestFactory,
 } from '@nestjs/core'
 import {
-  SwaggerModule, DocumentBuilder, 
+  SwaggerModule, DocumentBuilder,
 } from '@nestjs/swagger'
 import {
-  AppModule, 
+  AppModule,
 } from './app.module'
+import {
+  ConsoleLogger,
+} from '@nestjs/common'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, {
+    logger: new ConsoleLogger({
+      json: true,
+      colors: true,
+    }),
+  })
   const config = new DocumentBuilder()
     .setTitle('Mcp Host')
     .setDescription('The MCP host API description')
@@ -18,6 +26,6 @@ async function bootstrap() {
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, documentFactory)
-  await app.listen(process.env.PORT ?? 8000)
+  await app.listen(process.env.PORT ?? 3000)
 }
 bootstrap()

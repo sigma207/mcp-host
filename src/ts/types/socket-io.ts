@@ -1,6 +1,7 @@
 import {
   ChatResponse,
+  GenerateResponse,
 } from 'ollama'
 export interface ServerToClientEvents {
-  ollamaStreamResponse: (response: ChatResponse) => void,
+  ollamaStreamResponse: (response: ChatResponse | GenerateResponse) => void,
 }

@@ -1,0 +1,59 @@
+import {
+  Injectable,
+} from '@nestjs/common'
+import ollama, {
+  type Message,
+  type Tool,
+} from 'ollama'
+
+const LLM_NUM_CTX = 4096
+
+@Injectable()
+export class OllamaService {
+  async chat(messages: Message[]) {
+    const response = await ollama.chat({
+      messages,
+      model: 'qwen2.5:latest',
+      options: {
+        num_ctx: LLM_NUM_CTX,
+      },
+      stream: true,
+    })
+    return response
+  }
+  async chatWithTools(messages: Message[], queryResults: string[] = [], tools: Tool[] = []) {
+
+    const lastContent = messages[messages.length - 1].content
+    const replacedMessages = messages.slice(0, messages.length - 2)
+    const toolMessageContent = `
+      ${lastContent}
+      Using these json: ${queryResults.join('\n')}
+      `
+    replacedMessages.push({
+      role: 'user',
+      content: toolMessageContent,
+    })
+    const response = await ollama.chat({
+      messages: replacedMessages,
+      model: 'qwen2.5:latest',
+      options: {
+        num_ctx: LLM_NUM_CTX,
+      },
+      stream: false,
+      tools,
+    })
+    return response
+
+  }
+  async finishChat(message: string, toolResults: string[] = []) {
+    const finalResponse = await ollama.generate({
+      model: 'llama3.1:latest',
+      prompt: `Using this data: ${toolResults.join(',')}. Respond to this prompt: ${message}. Don't respond with any coding or code-like content. And don't respond with any data including id from database.`,
+      options: {
+        num_ctx: LLM_NUM_CTX,
+      },
+      stream: true,
+    })
+    return finalResponse
+  }
+}
