@@ -61,14 +61,12 @@ export class CompletionsController  {
       content: '',
     }
     for await (const part of response) {
-      // this.logger.log(part)
       this.socketIoService.emitOllamaStreamResponse(part)
       if (!part.done) {
         messages.content += part.response
       }
     }
     this.messages.push(messages)
-    console.log(this.messages)
   }
   async handleOllamaChatStreamResponse(response: AbortableAsyncIterator<ChatResponse>) {
     const messages: Message = {
@@ -86,7 +84,6 @@ export class CompletionsController  {
       }
     }
     this.messages.push(messages)
-    console.log(this.messages)
   }
   @Post()
   @HttpCode(201)
@@ -102,14 +99,13 @@ export class CompletionsController  {
       const response = await this.ollamaService.chatWithTools(this.messages, queryResults, this.mcpCollectorService.ollamaTools)
       if (response.message.tool_calls && response.message.tool_calls.length > 0) {
         this.executeToolCall(response.message.tool_calls)
+        return
       } else {
         this.logger.warn(`No tool calls found: ${dto.message}`)
-        // TODO: Handle no tool calls
       }
-    } else {
-      const response = await this.ollamaService.chat(this.messages)
-      this.handleOllamaChatStreamResponse(response)
     }
+    const response = await this.ollamaService.chat(this.messages)
+    this.handleOllamaChatStreamResponse(response)
   }
   @Get()
   @HttpCode(200)
