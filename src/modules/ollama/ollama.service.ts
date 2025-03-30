@@ -7,13 +7,15 @@ import ollama, {
 } from 'ollama'
 
 const LLM_NUM_CTX = 4096
+const TOOL_COOL_MODEL = 'qwen2.5:latest'
+const RESPONSE_MODEL = 'deepseek-r1:latest'
 
 @Injectable()
 export class OllamaService {
   async chat(messages: Message[]) {
     const response = await ollama.chat({
       messages,
-      model: 'qwen2.5:latest',
+      model: RESPONSE_MODEL,
       options: {
         num_ctx: LLM_NUM_CTX,
       },
@@ -35,7 +37,7 @@ export class OllamaService {
     })
     const response = await ollama.chat({
       messages: replacedMessages,
-      model: 'qwen2.5:latest',
+      model: TOOL_COOL_MODEL,
       options: {
         num_ctx: LLM_NUM_CTX,
       },
@@ -47,7 +49,7 @@ export class OllamaService {
   }
   async finishChat(message: string, toolResults: string[] = []) {
     const finalResponse = await ollama.generate({
-      model: 'llama3.1:latest',
+      model: RESPONSE_MODEL,
       prompt: `Using this data: ${toolResults.join(',')}. Respond to this prompt: ${message}. Don't respond with any coding or code-like content. And don't respond with any data including id from database.`,
       options: {
         num_ctx: LLM_NUM_CTX,
