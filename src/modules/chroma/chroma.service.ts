@@ -15,10 +15,11 @@ import {
 } from '@/modules/mcp-collector/mcp-collector.service'
 import {
   resourcesToDocuments,
+  mxbaiEmbeddingFunction,
 } from '@/utils/chroma'
 
 const CHROMA_DB_N_RESULTS = 3
-const DISTANCE_THRESHOLD = 1.7
+const DISTANCE_THRESHOLD = 0.8
 const COLLECTION_NAME = 'collection'
 
 @Injectable()
@@ -44,6 +45,7 @@ export class ChromaService {
     }
     this.collection = await this.chromaClient.getOrCreateCollection({
       name: COLLECTION_NAME,
+      embeddingFunction: mxbaiEmbeddingFunction,
     })
   }
   async rag() {
