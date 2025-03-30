@@ -1,5 +1,7 @@
 import {
   Module,
+  NestModule,
+  MiddlewareConsumer,
 } from '@nestjs/common'
 import {
   RouterModule,
@@ -32,6 +34,9 @@ import {
   ChromaModule,
 } from './modules/chroma/chroma.module'
 import {
+  LoggerMiddleware,
+} from './middlewares/logger.middleware'
+import {
   InitService,
 } from './init.service'
 @Module({
@@ -63,4 +68,10 @@ import {
     InitService,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes('*')
+  }
+}
