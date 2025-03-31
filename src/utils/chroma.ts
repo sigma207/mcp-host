@@ -15,7 +15,7 @@ export const mxbaiEmbeddingFunction = new OllamaEmbeddingFunction({
   model: 'mxbai-embed-large',
   url: 'http://localhost:11434/api/embeddings',
 })
-const isTextResourceContents = (resource: ResourceContents): resource is TextResourceContents => (resource .mimeType === 'application/json')
+const isTextResourceContents = (resource: ResourceContents): resource is TextResourceContents => (resource .mimeType === 'text/plain' || resource.mimeType === 'application/json')
 
 export const resourcesToDocuments = async (name: string, collection: Collection, mcpServerAllResourceContents: ResourceContents[]) => {
   const documents: AddRecordsParams = {
