@@ -7,8 +7,8 @@ import ollama, {
 } from 'ollama'
 
 const LLM_NUM_CTX = 4096
-const TOOL_COOL_MODEL = 'qwen2.5:latest'
-const RESPONSE_MODEL = 'deepseek-r1:latest'
+const TOOL_COOL_MODEL = 'qwen2.5:14b'
+const RESPONSE_MODEL = 'llama3.1:latest'
 
 @Injectable()
 export class OllamaService {
