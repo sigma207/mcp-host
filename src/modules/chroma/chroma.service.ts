@@ -19,7 +19,7 @@ import {
 } from '@/utils/chroma'
 
 const CHROMA_DB_N_RESULTS = 3
-const DISTANCE_THRESHOLD = 0.8
+const DISTANCE_THRESHOLD = 0.46
 const COLLECTION_NAME = 'collection'
 
 @Injectable()
@@ -46,6 +46,9 @@ export class ChromaService {
     this.collection = await this.chromaClient.getOrCreateCollection({
       name: COLLECTION_NAME,
       embeddingFunction: mxbaiEmbeddingFunction,
+      metadata: {
+        'hnsw:space': 'ip',
+      },
     })
   }
   async rag() {
@@ -55,6 +58,7 @@ export class ChromaService {
     }))
   }
   async query(message: string) {
+    this.logger.log('chroma query', message)
     const results = await this.collection.query({
       queryTexts: [message], // Chroma will embed this for you
       nResults: CHROMA_DB_N_RESULTS, // how many results to return
@@ -71,9 +75,12 @@ export class ChromaService {
         }
       })
     })
-    // console.log(results.documents)
-    console.log(results.distances)
-    // console.log(filteredDocuments)
+    results.documents.forEach(documentList => {
+      documentList.forEach(document => {
+        this.logger.log(document)
+      })
+    })
+    this.logger.log(results.distances)
     return filteredDocuments
   }
 }
