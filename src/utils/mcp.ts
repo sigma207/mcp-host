@@ -1,19 +1,30 @@
 import {
-  Client,
+  Client, 
 } from '@modelcontextprotocol/sdk/client/index.js'
 import type {
-  ListResourcesResult, ResourceContents, ListToolsResult,
+  ListResourcesResult,
+  ResourceContents,
+  ListToolsResult,
 } from '@modelcontextprotocol/sdk/types.js'
 import type {
-  Tool,
+  Tool, 
 } from 'ollama'
 
-export const getClientResources = async (client: Client, resources: ListResourcesResult['resources']) => {
+export const getClientResources = async (
+  client: Client,
+  resources: ListResourcesResult['resources'],
+) => {
   const results: ResourceContents[] = []
-  await Promise.all(resources.map(async resource => {
-    const resourceData = await client.readResource(resource)
-    results.push(...resourceData.contents)
-  }))
+  await Promise.all(
+    resources.map(async resource => {
+      // ignore any uppercase resources for icms postgresql
+      if (/[A-Z]/.test(resource.name)) {
+        return
+      }
+      const resourceData = await client.readResource(resource)
+      results.push(...resourceData.contents)
+    }),
+  )
   return results
 }
 
