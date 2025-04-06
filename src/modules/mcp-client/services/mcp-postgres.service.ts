@@ -1,29 +1,25 @@
 import {
-  Injectable, 
+  Injectable,
 } from '@nestjs/common'
 import {
-  Client, 
+  Client,
 } from '@modelcontextprotocol/sdk/client/index.js'
 import {
-  StdioClientTransport, 
+  StdioClientTransport,
 } from '@modelcontextprotocol/sdk/client/stdio.js'
 import {
-  McpClientService, 
+  McpClientService,
 } from '@/ts/types/mcp'
+import {
+  ConfigService,
+} from '@nestjs/config'
 
-const transport = new StdioClientTransport({
-  command: 'node',
-  args: [
-    '../servers/mcp-server-postgresql/dist/index.js',
-    'postgresql://postgres:postgres@10.136.219.127:5432/DB_Delta_Platform',
-  ],
-})
+
 
 @Injectable()
 export class McpPostgresService implements McpClientService {
   public client: Client
-
-  constructor() {
+  constructor(private configService: ConfigService) {
     this.client = new Client(
       {
         name: 'postgres',
@@ -35,6 +31,15 @@ export class McpPostgresService implements McpClientService {
     )
   }
   connect() {
+    const postgresPath = this.configService.get('MCP_SERVER_POSTGRESQL_PATH')
+    const postgresUri = this.configService.get('MCP_SERVER_POSTGRESQL_URI')
+    const transport = new StdioClientTransport({
+      command: 'node',
+      args: [
+        postgresPath,
+        postgresUri,
+      ],
+    })
     this.client.connect(transport)
   }
 }

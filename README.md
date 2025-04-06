@@ -69,7 +69,16 @@ $ mau deploy
 ```
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Environment variables
 
+*.env.development.local* is used for development.
+```bash
+# Ollama
+OLLAMA_HOST="http://127.0.0.1:11434"
+# MCP Servers
+MCP_SERVER_POSTGRESQL_PATH=../servers/mcp-server-postgresql/dist/index.js
+MCP_SERVER_POSTGRESQL_URI="postgresql://root:root@localhost:5432/northwind"
+```
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:

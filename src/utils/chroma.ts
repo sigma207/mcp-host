@@ -1,18 +1,18 @@
 import crypto from 'crypto'
 import {
-  OllamaEmbeddingFunction, 
+  OllamaEmbeddingFunction,
 } from 'chromadb'
 import {
-  Collection, type AddRecordsParams, 
+  Collection, type AddRecordsParams,
 } from 'chromadb'
 import type {
-  ResourceContents, TextResourceContents, 
+  ResourceContents, TextResourceContents,
 } from '@modelcontextprotocol/sdk/types.js'
 
 //mxbai-embed-large
-export const mxbaiEmbeddingFunction = new OllamaEmbeddingFunction({
+export const mxbaiEmbeddingFunction = (ollamaHost: string) => new OllamaEmbeddingFunction({
   model: 'mxbai-embed-large',
-  url: 'http://10.137.2.13:11434/api/embeddings',
+  url: `${ollamaHost}/api/embeddings`,
 })
 const isTextResourceContents = (resource: ResourceContents): resource is TextResourceContents =>
   resource.mimeType === 'text/plain' || resource.mimeType === 'application/json'

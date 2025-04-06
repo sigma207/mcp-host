@@ -7,6 +7,9 @@ import {
   RouterModule,
 } from '@nestjs/core'
 import {
+  ConfigModule,
+} from '@nestjs/config'
+import {
   AppController,
 } from './app.controller'
 import {
@@ -45,6 +48,10 @@ import {
     ApiModule,
     McpCollectorModule,
     ChromaModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.development.local'],
+    }),
     RouterModule.register([{
       path: 'api',
       module: ApiModule,

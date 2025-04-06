@@ -17,6 +17,9 @@ import {
   resourcesToDocuments,
   mxbaiEmbeddingFunction,
 } from '@/utils/chroma'
+import {
+  ConfigService,
+} from '@nestjs/config'
 
 const CHROMA_DB_N_RESULTS = 3
 const DISTANCE_THRESHOLD = 0.46
@@ -29,6 +32,7 @@ export class ChromaService {
   logger = new Logger(ChromaService.name)
   constructor(
     private readonly mcpCollectorService: McpCollectorService,
+    private readonly configService: ConfigService,
   ) {}
 
   async initCollection() {
@@ -43,9 +47,10 @@ export class ChromaService {
     } catch {
       this.logger.warn('deleteCollection error')
     }
+    const ollamaHost = this.configService.get('OLLAMA_HOST')
     this.collection = await this.chromaClient.getOrCreateCollection({
       name: COLLECTION_NAME,
-      embeddingFunction: mxbaiEmbeddingFunction,
+      embeddingFunction: mxbaiEmbeddingFunction(ollamaHost),
       metadata: {
         'hnsw:space': 'ip',
       },

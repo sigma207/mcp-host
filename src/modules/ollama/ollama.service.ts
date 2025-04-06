@@ -1,8 +1,11 @@
 import {
-  Injectable, 
+  Injectable,
 } from '@nestjs/common'
 import {
-  Ollama, type Message, type Tool, 
+  ConfigService,
+} from '@nestjs/config'
+import {
+  Ollama, type Message, type Tool,
 } from 'ollama'
 
 const LLM_NUM_CTX = 4096
@@ -12,9 +15,9 @@ const RESPONSE_MODEL = 'llama3.1:latest'
 @Injectable()
 export class OllamaService {
   private ollama: Ollama
-  constructor() {
+  constructor(private configService: ConfigService) {
     this.ollama = new Ollama({
-      host: 'http://10.137.2.13:11434',
+      host: this.configService.get('OLLAMA_HOST'),
     })
   }
   async chat(messages: Message[]) {
