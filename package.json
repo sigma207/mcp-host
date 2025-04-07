@@ -21,11 +21,13 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
+    "@nestjs/axios": "^4.0.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.0.7",
+    "axios": "^1.8.4",
     "chromadb": "^1.10.5",
     "chromadb-default-embed": "^2.14.0",
     "ollama": "^0.5.14",
