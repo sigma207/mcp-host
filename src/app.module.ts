@@ -37,17 +37,22 @@ import {
   ChromaModule,
 } from './modules/chroma/chroma.module'
 import {
+  LightRagModule,
+} from './modules/light-rag/light-rag.module'
+import {
   LoggerMiddleware,
 } from './middlewares/logger.middleware'
 import {
   InitService,
 } from './init.service'
+
 @Module({
   imports: [
     EventsModule,
     ApiModule,
     McpCollectorModule,
     ChromaModule,
+    LightRagModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.development.local'],
